@@ -1,9 +1,13 @@
 package cmd
 
 import (
+	"fmt"
+	_ "github.com/sajib-hassan/go-gorm-migrator/example-app/db/ddls"
 	migratorCmd "github.com/sajib-hassan/go-gorm-migrator/pkg/migrator/cmd"
 	"github.com/spf13/cobra"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
 )
 
 func newMigrateCmd() *cobra.Command {
@@ -16,22 +20,23 @@ func newMigrateCmd() *cobra.Command {
 }
 
 func getDBConnection() *gorm.DB {
-	//dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s TimeZone=%s",
-	//	dbHost, dbPort, dbUser, dbPassword, dbName, dbSSLMode, dbTimeZone)
-	//
-	//db, err := gorm.Open(postgres.New(postgres.Config{
-	//	DSN: dsn,
-	//}), &gorm.Config{})
-	//
-	//if err != nil {
-	//	log.Fatal("postgres connect error: ", err)
-	//}
-	//return db
+	dbHost := "localhost"
+	dbPort := 5432
+	dbName := "migrator_db"
+	dbUser := "migrator_user"
+	dbPassword := "migrator_password"
+	dbSSLMode := "disable"
+	dbTimeZone := "UTC"
 
-	return &gorm.DB{
-		Config:       nil,
-		Error:        nil,
-		RowsAffected: 0,
-		Statement:    nil,
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s TimeZone=%s",
+		dbHost, dbPort, dbUser, dbPassword, dbName, dbSSLMode, dbTimeZone)
+
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN: dsn,
+	}), &gorm.Config{})
+
+	if err != nil {
+		log.Fatal("postgres connect error: ", err)
 	}
+	return db
 }
