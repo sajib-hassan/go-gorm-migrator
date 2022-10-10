@@ -9,8 +9,7 @@ import (
 func TestNewMigrateCmd(t *testing.T) {
 	options := &OptionsArg{
 		FnGetDBCallback: getDBConnection,
-		DdlFileStoreDir: "db/ddls",
-		DmlFileStoreDir: "db/dmls",
+		FileStoreDir:    "db",
 	}
 	c := NewMigrateCmd(options)
 

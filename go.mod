@@ -3,6 +3,7 @@ module github.com/sajib-hassan/go-gorm-migrator
 go 1.19
 
 require (
+	github.com/go-faker/faker/v4 v4.0.0-beta.3
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.13.0
 	gorm.io/driver/postgres v1.4.4

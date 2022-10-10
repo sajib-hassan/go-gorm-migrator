@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	_ "github.com/sajib-hassan/go-gorm-migrator/example-app/db/ddls"
+	_ "github.com/sajib-hassan/go-gorm-migrator/example-app/db/dmls"
 	migratorCmd "github.com/sajib-hassan/go-gorm-migrator/pkg/migrator/cmd"
 	"github.com/spf13/cobra"
 	"gorm.io/driver/postgres"
@@ -15,6 +16,8 @@ func newMigrateCmd() *cobra.Command {
 		FnGetDBCallback: func() *gorm.DB {
 			return getDBConnection()
 		},
+		// [OPTIONAL]
+		//FileStoreDir: "db",
 	}
 	return migratorCmd.NewMigrateCmd(options)
 }

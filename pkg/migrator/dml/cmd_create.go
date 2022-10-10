@@ -1,4 +1,4 @@
-package ddl
+package dml
 
 import (
 	"errors"
@@ -15,12 +15,12 @@ import (
 func ExecuteCreate(args []string) {
 	startTime := time.Now()
 
-	extPtr := viper.GetString("ddl.extPtr")
-	dirPtr := viper.GetString("ddl.dirPtr")
-	formatPtr := viper.GetString("ddl.formatPtr")
-	timezoneName := viper.GetString("ddl.timezoneName")
-	seq := viper.GetBool("ddl.seq")
-	seqDigits := viper.GetInt("ddl.seqDigits")
+	extPtr := viper.GetString("dml.extPtr")
+	dirPtr := viper.GetString("dml.dirPtr")
+	formatPtr := viper.GetString("dml.formatPtr")
+	timezoneName := viper.GetString("dml.timezoneName")
+	seq := viper.GetBool("dml.seq")
+	seqDigits := viper.GetInt("dml.seqDigits")
 
 	if len(args) == 0 {
 		log.Fatal("error: please specify name")
@@ -51,7 +51,7 @@ func createCmd(dir string, startTime time.Time, format string, name string, ext 
 	var version string
 	var err error
 
-	pkg := "ddls"
+	pkg := "dmls"
 	dir = filepath.Clean(dir)
 	ext = "." + strings.TrimPrefix(ext, ".")
 	dir = filepath.Clean(filepath.Join(dir, pkg))

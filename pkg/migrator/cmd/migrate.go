@@ -7,8 +7,7 @@ import (
 
 type OptionsArg struct {
 	FnGetDBCallback migrator.FnDBConnection
-	DdlFileStoreDir string
-	DmlFileStoreDir string
+	FileStoreDir    string
 }
 
 func NewMigrateCmd(options *OptionsArg) *cobra.Command {
@@ -21,7 +20,8 @@ func NewMigrateCmd(options *OptionsArg) *cobra.Command {
 	}
 
 	migrateCmd.AddCommand(
-		newDdlMigrateCmd(options.FnGetDBCallback, options.DdlFileStoreDir),
+		newDdlMigrateCmd(options.FnGetDBCallback, options.FileStoreDir),
+		newDmlMigrateCmd(options.FnGetDBCallback, options.FileStoreDir),
 	)
 
 	return migrateCmd
