@@ -12,9 +12,9 @@ func createMigrationTemplate(name, version string) string {
 		`package ddls
 
 import (
+	"github.com/sajib-hassan/go-gorm-migrator/pkg/migrator"
+	"github.com/sajib-hassan/go-gorm-migrator/pkg/migrator/ddl"
 	"gorm.io/gorm"
-	"magic.pathao.com/veritas/common-pkg/migrator"
-	"magic.pathao.com/veritas/common-pkg/migrator/ddl"
 )
 
 func init() {ddl.Register(New%s)}
@@ -24,15 +24,21 @@ func (m *%s) Name() string {return "%s"}
 		
 func (m *%s) Up(tx *gorm.DB) error{
 	// Your migration code goes here
-	// Example: tx.Migrator().CreateTable(&authorize.User{})
+	// Example: tx.Migrator().CreateTable(&models.User{})
 	return nil
 }
 		
 func (m *%s) Down(tx *gorm.DB) error{
 	// Your migration code goes here
-	// Example: tx.Migrator().DropTable(&authorize.User{})
+	// Example: tx.Migrator().DropTable(&models.User{})
 	return nil
 }
 	`, structName, structName, structName, structName, structName, key, structName, structName,
 	)
+}
+
+func createPkgTemplate(name string) string {
+	return fmt.Sprintf(
+		`package %s
+`, name)
 }

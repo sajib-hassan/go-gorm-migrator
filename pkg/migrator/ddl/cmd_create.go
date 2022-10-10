@@ -1,6 +1,7 @@
 package ddl
 
 import (
+	"errors"
 	"fmt"
 	"github.com/sajib-hassan/go-gorm-migrator/pkg/migrator"
 	"github.com/spf13/viper"
@@ -88,8 +89,15 @@ func createCmd(dir string, startTime time.Time, format string, name string, ext 
 		return err
 	}
 
-	basename := fmt.Sprintf("%s_%s%s", version, name, ext)
-	filename := filepath.Join(dir, basename)
+	basename := "ddls"
+	filename := filepath.Join(dir, basename+ext)
+
+	if _, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
+		createPkgFile(filename, basename)
+	}
+
+	basename = fmt.Sprintf("%s_%s%s", version, name, ext)
+	filename = filepath.Join(dir, basename)
 
 	if err = createFile(filename, name, version); err != nil {
 		return err
@@ -121,6 +129,30 @@ func createFile(filename string, name, version string) error {
 	}
 
 	_, err = f.WriteString(createMigrationTemplate(name, version))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func createPkgFile(filename, name string) error {
+	// create exclusive (fails if file already exists)
+	// os.Create() specifies 0666 as the FileMode, so we're doing the same
+	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0666)
+
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			fmt.Println("Can't close pkg file")
+			panic(err)
+		}
+	}(f)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = f.WriteString(createPkgTemplate(name))
 	if err != nil {
 		return err
 	}
